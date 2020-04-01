@@ -1,12 +1,13 @@
 import {createAppContainer,} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack'
 import {createBottomTabNavigator} from 'react-navigation-tabs';
+import { createStackNavigator} from 'react-navigation-stack'
 import SignUp from './Components/SignUp';
 import Login from './Components/Login';
 import Welcome from './Components/Welcome';
 import Home from './Components/Home'
 import User from './Components/user'
 import Maybe from './Components/Maybe'
+
 // import * as firebase from 'firebase';
 
 var firebaseConfig = {
@@ -22,21 +23,28 @@ var firebaseConfig = {
 // Initialize Firebase
 // firebase.initializeApp(firebaseConfig);
 // firebase.analytics();
-const Hi = createStackNavigator({
-  welcome:Welcome,
-  SignUp :SignUp ,
-  Login:Login,
-  Maybe:Maybe
 
-});
+
+
 const Tab = createBottomTabNavigator({
-  welcome: Hi,
+  Welcome: Welcome,
   Home:Home,
   User:User,
   
+
 });
 
+const Stack = createStackNavigator({
 
-const App = createAppContainer(Tab);
+    SignUp :{
+    screen:SignUp,
+  },
+  Login :{
+    screen:Login,
+  },
+  Login :{
+    screen:Maybe,
+  }
 
-export default App;
+})
+export default createAppContainer(Tab);

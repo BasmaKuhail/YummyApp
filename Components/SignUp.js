@@ -25,7 +25,6 @@ addUser = ()=>{
             Username:username,
             userType: type
 
-
         })
             
             .catch(function (error) {
@@ -110,7 +109,10 @@ handleChange = ( e)=>{
         </View>
         
 
-        <TouchableOpacity style={styles.yellowButton} onClick={this.addUser}>
+        <TouchableOpacity style={styles.yellowButton} onClick={this.addUser}
+        onPress={() => {
+          this.props.navigation.navigate("User");
+        }}>
           <Text> Sign up</Text>
         </TouchableOpacity>
         </View>

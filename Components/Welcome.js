@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ImageBackground, Button,Image, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, ImageBackground,Image, TouchableOpacity} from 'react-native';
 
 export default class Welcome extends Component {
   onPress = () => {
@@ -42,14 +42,17 @@ export default class Welcome extends Component {
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {
-          this.props.navigation.navigate("Login", {
-          });
-        }}>
+          this.props.navigation.navigate("Login");
+        }}
+        >
 
         <Text>Login</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button}
+      onPress={() => {
+        this.props.navigation.navigate("Maybe");
+      }}>
 
       <Text>Maybe later</Text>
     </TouchableOpacity>
