@@ -17,44 +17,46 @@ export default class Welcome extends Component {
           justifyContent: 'center',
           flex: 1
         }}
-        source={require('../assets/background.png')}
-      >
+        source={{uri:"https://images.pexels.com/photos/207253/pexels-photo-207253.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}}      >
     
       <Image 
         style={{
-          width:400, 
-          height:400,
-          top:-100
+          width:300,
+          height:130,
+          top:-50
+         
         }}
+        source={require('../assets/wasfa6.png')}
 
-        source={{uri:"https://images.squarespace-cdn.com/content/v1/58a2fdcebebafb516ada1fe8/1540290099613-3ROW0HJZE2XYX6V0X88E/ke17ZwdGBToddI8pDm48kHAe7tJsq_QjUiQiP46BuYd7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UW40zwkR4L7HOs8xw3xsyz7UeCy_bEEXkaPS43zxyZdvP7cJNZlDXbgJNE9ef52e8w/Logo+Yummy.png?format=750w"}}
       />    
 
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {
-          this.props.navigation.navigate("SignUp");
+          this.props.navigation.navigate("page");
         }}
         >
-        <Text>Sign up</Text>
+        <Text
+        style={styles.text}>
+          Sign up</Text>
       </TouchableOpacity>
 
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {
-          this.props.navigation.navigate("Login");
+          this.props.navigation.navigate("page2");
         }}
         >
 
-        <Text>Login</Text>
+        <Text style={styles.text}>Login</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button}
       onPress={() => {
-        this.props.navigation.navigate("Maybe");
+        this.props.navigation.navigate("page3");
       }}>
 
-      <Text>Maybe later</Text>
+      <Text style={styles.text}>Maybe later</Text>
     </TouchableOpacity>
 
     </ImageBackground>
@@ -66,13 +68,16 @@ export default class Welcome extends Component {
 const styles=StyleSheet.create({
   button:{
     alignItems: 'center',
-    backgroundColor: '#ffa801',
+    backgroundColor: '#232a4f',
     padding: 10,
-    width:'60%',  
+    width:250,
+    height:40,
     marginBottom:10,
-    top:-50,
-    borderRadius:10,
-    fontSize:60,
+    borderRadius:100,
 
+  },
+  text:{
+    fontSize:18,
+    color:'white'
   }
 })
