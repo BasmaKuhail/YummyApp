@@ -1,8 +1,10 @@
 import {createAppContainer,} from 'react-navigation';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
-import { createStackNavigator} from 'react-navigation-stack'
+import { createStackNavigator} from 'react-navigation-stack';
+
+import Welcome from './Components/Welcome';
 import SignUp from './Components/SignUp';
 import Login from './Components/Login';
+<<<<<<< HEAD
 import Welcome from './Components/Welcome';
 import Home from './Components/Home'
 import User from './Components/user'
@@ -46,3 +48,18 @@ const Stack = createStackNavigator({
 
 })
 export default createAppContainer(Stack);
+=======
+import Maybe from './Components/Maybe'
+
+
+
+const MainNavigator = createStackNavigator({
+  Welcome:Welcome,
+  page :SignUp,
+  page2 :Login,
+  page3 :Maybe,
+});
+
+
+export default createAppContainer(MainNavigator);
+>>>>>>> 356f512dd8c5f6f5e894273d3ac3777c0daef17b
