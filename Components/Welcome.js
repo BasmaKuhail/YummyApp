@@ -73,6 +73,8 @@ export default class Welcome extends Component {
 const styles=StyleSheet.create({
   button:{
     alignItems: 'center',
+    textAlign:"center",
+    justifyContent:"center",
     backgroundColor: '#232a4f',
     padding: 10,
     width:250,

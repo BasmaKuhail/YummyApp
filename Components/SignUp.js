@@ -32,7 +32,7 @@ addUser = ()=>{
             this.props.navigation.navigate("CheifHome");
 
           }else{
-            this.props.navigation.navigate("ReaderHome");
+            this.props.navigation.navigate("Home");
           }
       }).catch(function (error) {
                 console.error("Error adding document: ", error);

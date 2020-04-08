@@ -7,7 +7,7 @@ import Home from './Components/Home';
 import User from './Components/user';
 import Card from './Components/card';
 import * as firebase from 'firebase/app';
-
+import CheifHome from './Components/CheifHome';
 
 // import * as firebase from 'firebase';
 
@@ -43,6 +43,9 @@ const Stack = createStackNavigator({
   Home :{
     screen:Home,
   },
+  CheifHome :{
+    screen:CheifHome,
+  }, 
 
 
 

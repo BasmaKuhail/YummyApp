@@ -97,8 +97,8 @@ const styles=StyleSheet.create({
   button:{
       top:10,
       backgroundColor: '#f9d03a',
-      padding: 10,
-      width: 179,
+      padding: 15,
+      width: 177,
       height:50,
       borderRadius:5,
       left:0,
