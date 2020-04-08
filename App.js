@@ -6,7 +6,8 @@ import Login from './Components/Login';
 import Welcome from './Components/Welcome';
 import Home from './Components/Home'
 import User from './Components/user'
-import Maybe from './Components/Maybe'
+import Card from './Components/card'
+import * as firebase from 'firebase/app';
 
 // import * as firebase from 'firebase';
 
@@ -21,30 +22,27 @@ var firebaseConfig = {
   measurementId: "G-Q1J13KHJYY"
 };
 // Initialize Firebase
-// firebase.initializeApp(firebaseConfig);
-// firebase.analytics();
+firebase.initializeApp(firebaseConfig);
 
-
-
-const Tab = createBottomTabNavigator({
-  Welcome: Welcome,
-  Home:Home,
-  User:User,
-  
-
-});
 
 const Stack = createStackNavigator({
 
-    SignUp :{
+  Welcome :{
+    screen:Welcome,
+  },
+
+  SignUp :{
     screen:SignUp,
   },
   Login :{
     screen:Login,
   },
-  Login :{
-    screen:Maybe,
-  }
+  Card :{
+    screen:Card,
+  },
+  Home :{
+    screen:Home,
+  },
 
 })
-export default createAppContainer(Tab);
+export default createAppContainer(Stack);
