@@ -30,23 +30,9 @@ class Card extends Component {
     
   return (
 
-    <ImageBackground
-    style={{
-        flex: 1,
-        flexDirection:"row",
-        padding:15,
-    
-
-      
-    }}
-    source={{uri:"https://images.pexels.com/photos/207253/pexels-photo-207253.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}}
-
-  >   
-
-
   <ScrollView>
 
-    <View>
+    <View style={{flex:1, alignItems:"center"}}>
             {list.map((meal)=>
               <View style={styles.container}>
                     <TouchableOpacity>
@@ -74,7 +60,6 @@ class Card extends Component {
     </View>
       
     </ScrollView>   
-        </ImageBackground>        
   );
 }
 }
@@ -86,8 +71,8 @@ const styles=StyleSheet.create({
     paddingRight:10,
     paddingLeft:7,
     maxWidth:375,
-    maxHeight:500,
-    backgroundColor: 'rgba(255,253,231,0.8)',
+    maxHeight:307,
+    backgroundColor: '#5770A4',
     borderRadius:10,
     top:8,
     marginBottom:20
@@ -111,7 +96,7 @@ const styles=StyleSheet.create({
   },
   button:{
       top:10,
-      backgroundColor: '#F2A422',
+      backgroundColor: '#f9d03a',
       padding: 10,
       width: 179,
       height:50,

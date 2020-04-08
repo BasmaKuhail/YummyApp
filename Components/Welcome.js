@@ -22,7 +22,7 @@ export default class Welcome extends Component {
           justifyContent: 'center',
           flex: 1
         }}
-        source={{uri:"https://images.pexels.com/photos/207253/pexels-photo-207253.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}}      >
+        source={{uri:"https://images.pexels.com/photos/2446908/pexels-photo-2446908.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"}}      >
     
       <Image 
         style={{
@@ -38,7 +38,7 @@ export default class Welcome extends Component {
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {
-          this.props.navigation.navigate("page");
+          this.props.navigation.navigate("SignUp");
         }}
         >
         <Text
@@ -49,7 +49,7 @@ export default class Welcome extends Component {
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {
-          this.props.navigation.navigate("page2");
+          this.props.navigation.navigate("Login");
         }}
         >
 
@@ -58,11 +58,7 @@ export default class Welcome extends Component {
 
       <TouchableOpacity style={styles.button}
       onPress={() => {
-<<<<<<< HEAD
         this.props.navigation.navigate("Home");
-=======
-        this.props.navigation.navigate("page3");
->>>>>>> 356f512dd8c5f6f5e894273d3ac3777c0daef17b
       }}>
 
       <Text style={styles.text}>Maybe later</Text>
