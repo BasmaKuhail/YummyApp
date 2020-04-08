@@ -1,57 +1,44 @@
 import React, {Component} from 'react';
 import { Text, View, TouchableOpacity, TextInput,StyleSheet, ImageBackground} from 'react-native';
 import  {RadioButton, RadioButtonInput, RadioButtonLabel, RadioForm} from 'react-native-simple-radio-button'
+import * as firebase from "firebase";
 
 class SignUp extends Component{
   state={
     email:"",
     username:"",
     password:"",
-    
-
 }
 
 addUser = ()=>{
-    const{email, username, type, password}= this.state; 
+  const{email, username, password}= this.state; 
 
-    const db = firebase.firestore();
-    console.log(email,password ,"email,password")
-    
-    firebase.auth().createUserWithEmailAndPassword(email,password)
-    .then(()=>{
-        let user  =  firebase.auth().currentUser
-        db.collection("users").doc(user.uid).set({
-            Email:email,
-            Username:username,
-            userType: type
+  const db = firebase.firestore();
+  
+  
+      db.collection("users").doc(user.uid).set({
+          Email:email,
+          Username:username,
+          userType: type
 
-        })
-            
-            .catch(function (error) {
-                console.error("Error adding document: ", error);
-            });
-    })
 
-    .catch(function (error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(error)
-            alert(errorCode)
-            // ...
-        })
+      })
+        
+          .catch(function (error) {
+              console.error("Error adding document: ", error);
+          });
+  
 
 }
 
 handleChange = ( e)=>{
 
-    let key = e.target.name;
+  let key = e.target.name;
 
-    this.setState({
-        [key]:e.target.value
-    })
+  this.setState({
+      [key]:e.target.value
+  })
 }
-
 
   render(){
 
@@ -109,10 +96,7 @@ handleChange = ( e)=>{
         </View>
         
 
-        <TouchableOpacity style={styles.yellowButton} onClick={this.addUser}
-        onPress={() => {
-          this.props.navigation.navigate("User");
-        }}>
+        <TouchableOpacity style={styles.yellowButton} onClick={this.addUser}>
           <Text> Sign up</Text>
         </TouchableOpacity>
         </View>
