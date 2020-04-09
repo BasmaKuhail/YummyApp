@@ -1,117 +1,131 @@
-import React, { Component } from 'react';
-import { StyleSheet, ScrollView,Text, View, ImageBackground, Button,Image, TouchableOpacity, TextInput} from 'react-native';
+import React, {Component} from 'react';
+import { Text, View, StyleSheet, Image, ImageBackground, TouchableOpacity, ScrollView} from 'react-native';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
-
-class Card extends Component {
-
-  state={
-    list:[]
-  }
-
-  componentDidMount(){
-    const db = firebase.firestore();
-    const {list} = this.state;
-    let me = this;
-
-    db.collection("meals").get().then(function(querySnapshot) {
-        querySnapshot.forEach((doc)=> {
-            console.log(doc.id, " => ", doc.data());
-            list.push(doc.data())
-            me.setState(list)
-            
-        });
-    });
-}
-    render(){
-      const {list}= this.state;
-
+class Card extends Component{
+    state={
+        list:[]
+      }
     
-  return (
+      componentDidMount(){
+        const db = firebase.firestore();
+        const {list} = this.state;
+        let me = this;
+    
+        db.collection("meals").get().then(function(querySnapshot) {
+            querySnapshot.forEach((doc)=> {
+                console.log(doc.id, " => ", doc.data());
+                list.push(doc.data())
+                me.setState(list)
+                
+            });
+        });
+    }
+    
+  render(){
+    const {list}= this.state;
 
-  <ScrollView>
-
-    <View style={{flex:1, alignItems:"center"}}>
-            {list.map((meal)=>
-              <View style={styles.container}>
-                    <TouchableOpacity>
-                    <Text style={styles.header}>{meal.mealName}</Text>
-                    <Image 
-                        style={styles.image}
-                        source={{uri:meal.image}}                    
-                    />
-                    
-                    <View style={{flexDirection:"row"}}>
-                    <TouchableOpacity style={styles.button}>
-                        <Text >details</Text> 
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
-                        <Text >Add to fav</Text> 
-                    </TouchableOpacity>
-                    </View>
-                                  
-                    </TouchableOpacity>
-            </View>
-
-
-                    
-                )}
-    </View>
+    return(
       
-    </ScrollView>   
-  );
-}
-}
+    
+      <ScrollView> 
+      <View style={{flex:1, alignItems:"center"}}>
 
-const styles=StyleSheet.create({
-  container:{
-    flex:1,
-    paddingBottom:30,
-    paddingRight:10,
-    paddingLeft:7,
-    maxWidth:375,
-    maxHeight:307,
-    backgroundColor: '#5770A4',
-    borderRadius:10,
-    top:8,
-    marginBottom:20
+      {list.map((meal)=>
+  
+        <View style={styles.container}>
+            
+            <Text style={styles.header}>{meal.mealName}</Text>
+            <Image 
+            style={styles.image}
+            source={{uri:meal.image}}    
+            />
+        <View style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+                        
+        }}>
 
-  },
-  header:{
-      fontSize:25,
-      fontWeight:"bold",
-      color:'#040404',
-      padding:10,
-      alignItems:"center",
-      textAlign:"center",
-      justifyContent:"center"
-  },
-  image:{
-      width: 360,
-      height: 180,
-      borderRadius:10,
-      shadowColor:'black'
-      
-  },
-  button:{
-      top:10,
-      backgroundColor: '#f9d03a',
-      padding: 10,
-      width: 179,
-      height:50,
-      borderRadius:5,
-      left:0,
-      alignItems: "center",
-      textAlign:"center",
-      marginRight:5
-  },
-  text:{
-      fontSize:20,
-      color:'#38383F',
-      alignItems: "center",
-      justifyContent:"center"
-      },
-});
+        <TouchableOpacity
+        style={styles.button}>
+            <Text style={styles.text}>SHOW MORE</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+        style={styles.button2}>
+            <Image
+                style={styles.fav}
+                source={require('../assets/heart.png')}
+                    >
+            </Image>
+        
+        </TouchableOpacity>
+        </View>
+        </View>
+        
+        
+      )}
+      </View>
+        </ScrollView>  
+    )}}
+    const styles=StyleSheet.create({
+        container:{
+          margin:20,
+          flex:1,
+          maxWidth:600,
+          maxHeight:450,
+          alignItems: "center",
+          textAlign:"center",
+          backgroundColor: 'rgba(255,253,231,0.8)',
+          borderRadius:10,
+          top:10,
+        },
+        heder:{
+            fontSize:30,
+            color:'rgb(22,53,86)',
+            padding:10,
+        },
+        image:{
+            width: 300,
+            height:300,
+            margin:20,
+            borderRadius:10,
+            shadowColor:'black'
+            
+        },
+        button:{
+            top:-10,
+            backgroundColor: '#fffde7',
+            padding: 10,
+            width: 106,
+            height:40,
+            fontSize: 14,
+            borderRadius:10,
+            left:109,
+        },
+        text:{
+            color:'rgb(22,53,86)',
+            fontSize:14
+        },
+        button2:{
+            top:-10,
+            padding: 1,
+            fontSize: 14,
+            borderRadius:10,
+            right:180,
+        },
+        fav:{
+            height:30,
+            width:30,
+        },
+        myfav:{
+            width:50,
+            height:50,
+            right:160,
+            top:35
+        }
+    })
+
 
 export default Card;

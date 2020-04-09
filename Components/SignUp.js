@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Text, View, TouchableOpacity, TextInput,StyleSheet, ImageBackground} from 'react-native';
+import { Text, View, TouchableOpacity, TextInput,StyleSheet, ImageBackground, ScrollView} from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -64,6 +64,7 @@ handleChange = ( e)=>{
 
 
     return(
+      
       <ImageBackground
         style={{
           flex: 1,

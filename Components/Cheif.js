@@ -5,24 +5,9 @@ import { Text, View, StyleSheet, Image, ImageBackground, TouchableOpacity, Scrol
 class User extends Component{
   render(){
     return(
-      <ImageBackground
-        style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center"
-          
-        }}
-        source={{uri:"https://images.pexels.com/photos/207253/pexels-photo-207253.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}}
-      >
-          <Text>Cheif</Text>
-      <TouchableOpacity>
-            <Image
-                style={styles.myfav}
-                source={require('../assets/heart.png')}
-                    >
-            </Image>
-        
-        </TouchableOpacity>
+      
+    <View>
+    
       <ScrollView>   
         <View style={styles.container}>
             
@@ -56,8 +41,8 @@ class User extends Component{
         
         
 
-        </ScrollView>   
-        </ImageBackground>
+        </ScrollView>  
+        </View> 
     )}}
     const styles=StyleSheet.create({
         container:{
