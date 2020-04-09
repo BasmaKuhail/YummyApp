@@ -1,46 +1,67 @@
 import React, {Component} from 'react';
 import { Text, View, TouchableOpacity, TextInput,StyleSheet, ImageBackground} from 'react-native';
-import  {RadioButton, RadioButtonInput, RadioButtonLabel, RadioForm} from 'react-native-simple-radio-button'
-import * as firebase from "firebase";
+import { RadioButton } from 'react-native-paper';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+
+
 
 class SignUp extends Component{
   state={
     email:"",
     username:"",
     password:"",
+
 }
 
 addUser = ()=>{
-  const{email, username, password}= this.state; 
+    const{email, username, type, password}= this.state; 
 
-  const db = firebase.firestore();
-  
-  
-      db.collection("users").doc(user.uid).set({
-          Email:email,
-          Username:username,
-          userType: type
+    const db = firebase.firestore();    
+    firebase.auth().createUserWithEmailAndPassword(email,password)
+    .then(()=>{
+        let user  =  firebase.auth().currentUser
+        db.collection("users").doc(user.uid).set({
+            Email:email,
+            Username:username,
+            userType: type
 
+        }).then( (docRef) =>{
+          if(type =='Cheif'){
+            this.props.navigation.navigate("CheifHome");
 
-      })
-        
-          .catch(function (error) {
-              console.error("Error adding document: ", error);
-          });
-  
+          }else{
+            this.props.navigation.navigate("ReaderHome");
+          }
+      }).catch(function (error) {
+                console.error("Error adding document: ", error);
+            });
+    })
+
+    .catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(error)
+            alert(errorCode)
+            // ...
+        })
 
 }
 
 handleChange = ( e)=>{
 
-  let key = e.target.name;
+    let key = e.target.name;
 
-  this.setState({
-      [key]:e.target.value
-  })
+    this.setState({
+        [key]:e.target.value
+    })
 }
 
+
   render(){
+
 
     return(
       <ImageBackground
@@ -85,18 +106,37 @@ handleChange = ( e)=>{
         />
          
 
-        <Text style={styles.text1}>SignUp as:</Text>
-        <View style={styles.radio}>
+        <Text style={styles.text1}>Sign up as:</Text>
+        <View style={{flexDirection:"row"}}>
+
+          <View style={{flexDirection:"row"}}>
+            <RadioButton
+              value="Cheif"
+              onPress={this.handleChange}
+              color="#f9d03a"    
+              name="type"          
+            />
+            <Text style={styles.RadioText}>Cheif</Text>
+
+          </View>
+
+          <View  style={{flexDirection:"row"}}>
           <RadioButton
-            type='radio'            
-          >
-           <Text>cheif</Text> 
-            </RadioButton>
-         
-        </View>
+            value="Reader"
+            onPress={this.handleChange}
+            color="#f9d03a"  
+            name="type"          
+            
+
+          />
+          <Text style={styles.RadioText}>Reader</Text>
+
+          </View>
+      </View>
         
 
-        <TouchableOpacity style={styles.yellowButton} onClick={this.addUser}>
+        <TouchableOpacity style={styles.yellowButton} onClick={this.addUser}
+        onPress={this.addUser}>
           <Text> Sign up</Text>
         </TouchableOpacity>
         </View>
@@ -106,11 +146,11 @@ handleChange = ( e)=>{
 }
   const styles=StyleSheet.create({
     container:{
-      top:130,
+      top:90,
       left:20,
       flex:1,
       maxWidth:370,
-      maxHeight:500,
+      maxHeight:575,
       alignItems: "center",
       textAlign:"center",
       position: "relative",
@@ -125,6 +165,7 @@ handleChange = ( e)=>{
       right:90,
       color:'#fffde7',
       marginTop: 50,
+      left:10
     },
 
     line:{
@@ -137,6 +178,8 @@ handleChange = ( e)=>{
       fontSize: 20,
       color:'#fffde7',
       marginTop: 20,
+      textAlign:"center",
+
     },
 
     input1:{
@@ -165,7 +208,6 @@ handleChange = ( e)=>{
       height: 40,
       color:'black',
       borderRadius:5,
-      marginTop: 10,
     },
     yellowButton:{
       backgroundColor: '#f9d03a',
@@ -179,9 +221,16 @@ handleChange = ( e)=>{
 
     text1:{
       fontSize: 20,
-      left:'30%',
       color:'#fffde7',
-    },
+      marginBottom:7
+        },
+
+    RadioText:{
+      fontSize: 20,
+      color:'#4479EB',
+      marginBottom:17,
+      marginRight:17
+        },
 
   })
 

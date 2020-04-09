@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, ImageBackground,Image, TouchableOpacity} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import 'react-native-gesture-handler';
+
+
 
 export default class Welcome extends Component {
   onPress = () => {
@@ -33,7 +38,7 @@ export default class Welcome extends Component {
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {
-          this.props.navigation.navigate("page");
+          this.props.navigation.navigate("SignUp");
         }}
         >
         <Text
@@ -44,7 +49,7 @@ export default class Welcome extends Component {
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {
-          this.props.navigation.navigate("page2");
+          this.props.navigation.navigate("Login");
         }}
         >
 
@@ -53,7 +58,9 @@ export default class Welcome extends Component {
 
       <TouchableOpacity style={styles.button}
       onPress={() => {
-        this.props.navigation.navigate("page3");
+
+        this.props.navigation.navigate("Home");
+
       }}>
 
       <Text style={styles.text}>Maybe later</Text>
