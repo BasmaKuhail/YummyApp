@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import { Text, View, TouchableOpacity, TextInput,StyleSheet, ImageBackground} from 'react-native';
 import  {RadioButton, RadioButtonInput, RadioButtonLabel, RadioForm} from 'react-native-simple-radio-button'
-
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
 class Login extends Component{
   state={
     email:"",

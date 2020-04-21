@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import { Text, View, TouchableOpacity, TextInput,StyleSheet, ImageBackground, ScrollView} from 'react-native';
-import { RadioButton } from 'react-native-paper';
+import {Alert, ActivityIndicator, Text, View, TouchableOpacity, TextInput,StyleSheet, ImageBackground} from 'react-native';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
@@ -8,20 +7,46 @@ import 'firebase/auth';
 
 
 class SignUp extends Component{
-  state={
-    email:"",
-    username:"",
-    password:"",
-
-}
-
+  constructor() {
+    super();
+ 
+  this.state = { 
+    displayName: '',
+    email: '', 
+    password: '',
+    isLoading: false
+  } }
+  updateInputVal = (val, prop) => {
+    const state = this.state;
+    state[prop] = val;
+    this.setState(state);
+  }
 addUser = ()=>{
     const{email, username, type, password}= this.state; 
 
-    const db = firebase.firestore();    
-    firebase.auth().createUserWithEmailAndPassword(email,password)
-    .then(()=>{
-        let user  =  firebase.auth().currentUser
+    const db = firebase.firestore();   
+    if(email === '' && password === '') {
+      Alert.alert('Enter details to signup!')
+    } else {
+      this.setState({
+        isLoading: true,
+      })
+      fireba
+     
+    firebase
+    .auth()
+    .createUserWithEmailAndPassword(email,password)
+    .then((res)=>{
+      res.user.updateProfile({
+        displayName: this.state.displayName
+      })
+      console.log('User registered successfully!')
+      this.setState({
+        isLoading: false,
+        displayName: '',
+        email: '', 
+        password: ''
+      })
         db.collection("users").doc(user.uid).set({
             Email:email,
             Username:username,
@@ -34,21 +59,13 @@ addUser = ()=>{
           }else{
             this.props.navigation.navigate("ReaderHome");
           }
-      }).catch(function (error) {
-                console.error("Error adding document: ", error);
-            });
+      })
     })
 
-    .catch(function (error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(error)
-            alert(errorCode)
-            // ...
-        })
+    .catch(error => this.setState({ errorMessage: error.message })) 
 
-}
+
+}}
 
 handleChange = ( e)=>{
 
@@ -56,11 +73,19 @@ handleChange = ( e)=>{
 
     this.setState({
         [key]:e.target.value
-    })
+       
+    });
 }
 
 
   render(){
+    if(this.state.isLoading){
+      return(
+        <View style={styles.preloader}>
+          <ActivityIndicator size="large" color="#9E9E9E"/>
+        </View>
+      )
+    }  
 
 
     return(
@@ -83,7 +108,9 @@ handleChange = ( e)=>{
           name="email" 
           placeholder ="  E-mail"
           defaultValue={this.state.email} 
-          onChange={this.handleChange}               
+          value={this.state.email}
+          onChangeText={(val) => this.updateInputVal(val, 'email')}
+                        
         />  
            
         <TextInput 
@@ -92,7 +119,8 @@ handleChange = ( e)=>{
           name= "username" 
           placeholder ="  Username"
           defaultValue={this.state.username} 
-          onChange={this.handleChange} 
+          value={this.state.displayName}
+          onChangeText={(val) => this.updateInputVal(val, 'displayName')}
         />
 
                 
@@ -103,41 +131,17 @@ handleChange = ( e)=>{
           name= "password" 
           placeholder ="  Password"
           defaultValue={this.state.password} 
-          onChange={this.handleChange} 
+          value={this.state.password}
+          onChangeText={(val) => this.updateInputVal(val, 'password')}
+          maxLength={15}
+          secureTextEntry={true}
         />
          
 
-        <Text style={styles.text1}>Sign up as:</Text>
-        <View style={{flexDirection:"row"}}>
-
-          <View style={{flexDirection:"row"}}>
-            <RadioButton
-              value="Cheif"
-              onPress={this.handleChange}
-              color="#f9d03a"    
-              name="type"          
-            />
-            <Text style={styles.RadioText}>Cheif</Text>
-
-          </View>
-
-          <View  style={{flexDirection:"row"}}>
-          <RadioButton
-            value="Reader"
-            onPress={this.handleChange}
-            color="#f9d03a"  
-            name="type"          
-            
-
-          />
-          <Text style={styles.RadioText}>Reader</Text>
-
-          </View>
-      </View>
         
 
-        <TouchableOpacity style={styles.yellowButton} onClick={this.addUser}
-        onPress={this.addUser}>
+        <TouchableOpacity style={styles.yellowButton} 
+        onPress={()=>this.addUser}>
           <Text> Sign up</Text>
         </TouchableOpacity>
         </View>

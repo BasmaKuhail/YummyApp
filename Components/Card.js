@@ -1,38 +1,83 @@
 import React, {Component} from 'react';
-import { Text, View, StyleSheet, Image, ImageBackground, TouchableOpacity, ScrollView} from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView} from 'react-native';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
 class Card extends Component{
+
     state={
-        list:[]
+        meals:[],
+        uid:"", 
+        mealId:""
       }
-    
+  
       componentDidMount(){
-        const db = firebase.firestore();
-        const {list} = this.state;
-        let me = this;
-    
-        db.collection("meals").get().then(function(querySnapshot) {
-            querySnapshot.forEach((doc)=> {
-                console.log(doc.id, " => ", doc.data());
-                list.push(doc.data())
-                me.setState(list)
-                
+          const db = firebase.firestore();
+          const {meals} = this.state;
+          let me = this;
+      
+          db.collection("meals").get().then(function(querySnapshot) {
+              querySnapshot.forEach((doc)=> {
+                  const fetchedMealData = {
+                      id: doc.id,
+                      ...doc.data()
+                    };
+                  meals.push(fetchedMealData);
+                  me.setState(meals)
+                  
+              });
+          });
+          firebase.auth().onAuthStateChanged((user) => {
+              if (user) {
+                // User logged in already or has just logged in.
+                console.log(user.uid);
+                this.setState({uid:user.uid})
+              } else {
+                // User not logged in or has just logged out.
+              };
             });
-        });
-    }
-    
+      }
+  
+      getMealId=(clickedMealId)=> {
+          this.setState({mealId: clickedMealId})
+          console.log(this.state.mealId)
+  
+          const db = firebase.firestore();
+  
+          const {uid} = this.state;
+          console.log(this.state)
+  
+          db.collection("mealUserId").add({
+              mealId: clickedMealId,
+              currentUserUid:uid
+          
+          })
+          .then( (docRef) =>{
+            this.props.navigation.navigate('Saved')
+  
+          })
+  
+  
+       }
+       
+       learnMore=(clickedMealId)=>{
+
+          this.props.navigation.navigate('Meal', {id: clickedMealId})
+       }
+  
+     
   render(){
-    const {list}= this.state;
+    const {meals}= this.state;
+        console.log(this.state.meals)
 
     return(
       
     
       <ScrollView> 
+          
       <View style={{flex:1, alignItems:"center"}}>
 
-      {list.map((meal)=>
+      {meals.map((meal)=>
   
         <View style={styles.container}>
             
@@ -48,13 +93,16 @@ class Card extends Component{
         }}>
 
         <TouchableOpacity
-        style={styles.button}>
-            <Text style={styles.text}>SHOW MORE</Text>
+        style={styles.button}
+        onPress={()=>this.learnMore(meal.id)}>
+            <Text  style={styles.text}>SHOW MORE</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-        style={styles.button2}>
+        style={styles.button2}
+        onPress={()=>this.getMealId(meal.id)}>
             <Image
+              
                 style={styles.fav}
                 source={require('../assets/heart.png')}
                     >

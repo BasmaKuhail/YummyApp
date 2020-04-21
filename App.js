@@ -1,13 +1,12 @@
 import {createAppContainer,} from 'react-navigation';
-import { createStackNavigator} from 'react-navigation-stack';
-
+import { createDrawerNavigator} from 'react-navigation-drawer';
 import Welcome from './Components/Welcome';
 import SignUp from './Components/SignUp';
 import Login from './Components/Login';
-import Maybe from './Components/Maybe';
 import Home from './Components/Home'
-import User from './Components/user'
-import Card from './Components/Card'
+import Meal from './Components/meal'
+import Saved from './Components/saved'
+import Add from './Components/addMeal'
 import * as firebase from 'firebase/app';
 
 
@@ -25,24 +24,35 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 
-const Stack = createStackNavigator({
+const mineNavigator = createDrawerNavigator({
 
-  Welcome :{
+  Welcome:{
     screen:Welcome,
   },
-
   SignUp :{
     screen:SignUp,
   },
   Login :{
     screen:Login,
   },
-  Card :{
-    screen:Card,
-  },
-  Home :{
+  meals :{
     screen:Home,
   },
+  Meal :{
+    screen:Meal,
+  },
+  
+Saved:{
+  screen:Saved
+},
+  
+Add:{
+  screen:Add
+}
+
+
+
 
 })
-export default createAppContainer(Stack);
+
+export default createAppContainer(mineNavigator);

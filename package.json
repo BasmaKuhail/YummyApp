@@ -36,7 +36,7 @@
     "react-navigation-stack": "^2.3.10",
     "react-navigation-switch-transitioner": "^0.1.1",
     "react-navigation-tabs": "^2.8.1",
-    "undefined": "undefined/package.json",
+    "undefined": "@react-native-firebase/app/lib/common",
     "x": "^0.1.2"
   },
   "devDependencies": {
