@@ -6,7 +6,7 @@ import Card from "./Card";
 class Home extends Component{
 
   render(){
-
+    console.log(this.props)
     return(
         <ImageBackground
             style={{
@@ -15,7 +15,7 @@ class Home extends Component{
             source={{uri:"https://images.pexels.com/photos/207253/pexels-photo-207253.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}}
             >   
 
-                <Card/>
+                <Card {...this.props}/>
         </ImageBackground>
 
     )}}

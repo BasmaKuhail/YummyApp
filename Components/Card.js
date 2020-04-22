@@ -61,7 +61,7 @@ class Card extends Component{
        }
        
        learnMore=(clickedMealId)=>{
-
+            console.log(clickedMealId)
           this.props.navigation.navigate('Meal', {id: clickedMealId})
        }
   
@@ -70,6 +70,7 @@ class Card extends Component{
     const {meals}= this.state;
         console.log(this.state.meals)
 
+    console.log(this.props )
     return(
       
     
@@ -101,8 +102,7 @@ class Card extends Component{
         <TouchableOpacity
         style={styles.button2}
         onPress={()=>this.getMealId(meal.id)}>
-            <Image
-              
+        <Image
                 style={styles.fav}
                 source={require('../assets/heart.png')}
                     >

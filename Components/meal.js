@@ -7,65 +7,35 @@ import 'firebase/firestore';
 
 class Meal extends Component{
     state={
-        meals:[],
-        uid:"", 
-        mealId:""
+        meal:{},
       }
-  
       componentDidMount(){
+
+        const { state } = this.props.navigation
+        console.log('mealId', state.params.id);
           const db = firebase.firestore();
-          const {meals} = this.state;
+          const {meal} = this.state;
           let me = this;
-      
-          db.collection("meals").get().then(function(querySnapshot) {
-              querySnapshot.forEach((doc)=> {
-                  const fetchedMealData = {
-                      id: doc.id,
-                      ...doc.data()
-                    };
-                  meals.push(fetchedMealData);
-                  me.setState(meals)
-                  
-              });
-          });
-          firebase.auth().onAuthStateChanged((user) => {
-              if (user) {
-                // User logged in already or has just logged in.
-                console.log(user.uid);
-                this.setState({uid:user.uid})
-              } else {
-                // User not logged in or has just logged out.
-              };
-            });
+
+        
+          db.collection('meals').doc(state.params.id)
+                .get()
+                .then((doc)=>{
+                        console.log(doc.data());
+                        
+                        me.setState({meal:doc.data()})
+
+                    });
       }
-  
-      getMealId=(clickedMealId)=> {
-          this.setState({mealId: clickedMealId})
-          console.log(this.state.mealId)
-  
-          const db = firebase.firestore();
-  
-          const {uid} = this.state;
-          console.log(this.state)
-  
-          db.collection("mealUserId").add({
-              mealId: clickedMealId,
-              currentUserUid:uid
-          
-          })
-          .then( (docRef) =>{
-              this.props.history.push('/favourite')
-  
-          })
-        }
     render(){
-        const {meal}= this.state;
+        const {meal:item}= this.state;
         console.log(this.state.meal)
+        console.log(this.props)
 
         return(
             <View >
                 
-                {meal.map((item)=>
+                
 
                 <View>
                     <Text >{item.mealName}</Text>
@@ -92,7 +62,7 @@ class Meal extends Component{
                     <Image className='mealImg'  src={item.image}/>
 
                </View>
-                )}
+              
             </View>
         );
     }
