@@ -91,11 +91,11 @@ handleChange = ( e)=>{
     return(
       
       <ImageBackground
-        style={{
-          flex: 1,
-        }}
-        source={require('../assets/back2.jpeg')}
-      >
+      style={{
+        flex: 1,
+    }}
+    source={{uri:"https://images.pexels.com/photos/207253/pexels-photo-207253.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}}
+    >
       
         <View style={styles.container}>
         <Text style={styles.header}>Sign Up</Text>

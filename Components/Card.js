@@ -129,10 +129,9 @@ class Card extends Component{
           borderRadius:10,
           top:10,
         },
-        heder:{
+        header:{
             fontSize:30,
             color:'rgb(22,53,86)',
-            padding:10,
         },
         image:{
             width: 300,

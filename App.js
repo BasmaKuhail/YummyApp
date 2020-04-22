@@ -7,6 +7,7 @@ import Home from './Components/Home'
 import Meal from './Components/meal'
 import Saved from './Components/saved'
 import Add from './Components/addMeal'
+import myMeals from './Components/myMeals'
 import * as firebase from 'firebase/app';
 
 
@@ -46,8 +47,11 @@ Saved:{
   screen:Saved
 },
   
-Add:{
+AddMeal:{
   screen:Add
+},
+myMeals:{
+  screen:myMeals
 }
 
 
