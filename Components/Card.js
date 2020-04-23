@@ -40,7 +40,7 @@ class Card extends Component{
   
       getMealId=(clickedMealId)=> {
           this.setState({mealId: clickedMealId})
-          console.log(this.state.mealId)
+          console.log(clickedMealId)
   
           const db = firebase.firestore();
   
@@ -103,9 +103,9 @@ class Card extends Component{
         style={styles.button2}
         onPress={()=>this.getMealId(meal.id)}>
         <Image
-                style={styles.fav}
-                source={require('../assets/heart.png')}
-                    >
+            style={styles.fav}
+            source={require('../assets/heart.png')}>
+                    
             </Image>
         
         </TouchableOpacity>
@@ -119,7 +119,6 @@ class Card extends Component{
     )}}
     const styles=StyleSheet.create({
         container:{
-          margin:20,
           flex:1,
           maxWidth:600,
           maxHeight:450,
@@ -128,6 +127,7 @@ class Card extends Component{
           backgroundColor: 'rgba(255,253,231,0.8)',
           borderRadius:10,
           top:10,
+          margin:10
         },
         header:{
             fontSize:30,
