@@ -7,9 +7,17 @@ import 'firebase/firestore';
 
 class Add extends Component{
     state={
-        uid:""
+        uid:"",
+        name: '',
+            contents: '',
+            recipe: '',
+            time: '',
+            type: '',
+            image: '', 
     }
     componentDidMount(){
+        console.log('working')
+
         const db = firebase.firestore();
 
         db.collection("meals").get().then((querySnapshot) => {
@@ -18,54 +26,46 @@ class Add extends Component{
             });
         });
 
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-              // User logged in already or has just logged in.
-              console.log(user.uid);
-              this.setState({uid:user.uid})
-            } else {
-              // User not logged in or has just logged out.
-            };
-          });
+     
         
     }
 
    
  
-    handleChange = (e)=>{
-
-        let key = e.target.name;
-
-        this.setState({
-            [key]:e.target.value
-        })
-
-    }
+ 
 
     AddMeal = ()=>{
+        console.log('working')
         const db = firebase.firestore();
-
         const {name , contents , recipe , time ,type, image, uid} = this.state;
-      
-
+    
         console.log(this.state)
         db.collection("meals").add({
-            mealName: name,
-            mealContents: contents,
+            name: name,
+            contents: contents,
             recipe: recipe,
-            timeNeed: time,
+            time: time,
             type: type,
             image: image,           
-            usid :uid,
         })
-        .then( (docRef) =>{
-            this.props.history.push('/myMeals')
-
-        })
+        
 
 
     }
+    renderButtonAdd(){
+        if(this.state.loading){
+          return<Text> Loading </Text>
+        }
+        return <View>
+          
+          <TouchableOpacity
+            style={styles.yellowButton}
 
+          style={styles.yellowButton}
+          onPress={this.AddMeal.bind(this)}
+          title='SignUp'><Text>Add</Text></TouchableOpacity>  
+        </View>
+    }
     
 render(){
     return(
@@ -83,42 +83,44 @@ render(){
                         style={styles.input}  
                         name="name" 
                         placeholder =" meal name"
-                        onChange={this.handleChange}
+                        onChangeText={name=> this.setState({name})}
+
                     />
              <TextInput 
-                                     style={styles.input}  
+                        style={styles.input}  
 
                         className="inputAdd" 
                         name='contents'
                         placeholder=" meal contents" 
-                        onChange={this.handleChange}
+                        onChangeText={contents=> this.setState({contents})}
+
                     />
             <TextInput 
-                                    style={styles.input}  
+                        style={styles.input}  
 
                         className="textarea"  
                         name= 'recipe' 
                         placeholder=" recipe" 
-                        onChange={this.handleChange}
+                        onChangeText={recipe=> this.setState({recipe})}
                         />
                         <TextInput 
                          style={styles.input}  
                         className="inputAdd" 
                         name='time'
                         placeholder=" time needed" 
-                        onChange={this.handleChange
-                    }/>
-                     <TextInput 
-                                             style={styles.input}  
+                        onChangeText={time=> this.setState({time})}
 
+                    />
+                     <TextInput 
+                        style={styles.input}  
                         className="inputAdd" 
                         name='image'
                         placeholder=" image addres" 
-                        onChange={this.handleChange}
+                        onChangeText={image=> this.setState({image})}
+
                     />
-                <TouchableOpacity 
-                style={styles.yellowButton}
-                onPress={()=>this.handleChange}><Text>add Meal</Text></TouchableOpacity>
+                      {this.renderButtonAdd()}
+
                 </View>
                 </ImageBackground>   
       

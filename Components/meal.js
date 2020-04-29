@@ -115,6 +115,7 @@ const styles=StyleSheet.create({
     conss:{
         fontSize:18,
         paddingLeft:5,
+        
 
     }
   

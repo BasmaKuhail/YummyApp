@@ -1,105 +1,108 @@
 import React, {Component} from 'react';
-import { Text, View, TouchableOpacity, TextInput,StyleSheet, ImageBackground} from 'react-native';
-import  {RadioButton, RadioButtonInput, RadioButtonLabel, RadioForm} from 'react-native-simple-radio-button'
+import {Alert, ActivityIndicator, Text, View, TouchableOpacity, TextInput,StyleSheet, ImageBackground} from 'react-native';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+
 class Login extends Component{
-  state={
-    email:"",
-    username:"",
-    password:"",
-    
-
-}
-
-addUser = ()=>{
-    const{email, username, type, password}= this.state; 
-
-    const db = firebase.firestore();
-    console.log(email,password ,"email,password")
-    
-    firebase.auth().createUserWithEmailAndPassword(email,password)
+  constructor(props) {
+    super(props);
+  this.state = { 
+    displayName: '',
+    email: '', 
+    password: '',
+    loading: false,
+    error:'',
+  }}
+  onLoginPress(){
+    console.log('working')
+    this.setState({error:'', loading:true});
+    const{email, password} =this.state;
+    if(email === '' && password === '') {
+      Alert.alert('Enter details to signup!')
+    } else {
+      this.setState({
+        loading: true,
+      })
+  }
+    firebase.auth().signInWithEmailAndPassword(email, password)
     .then(()=>{
-        let user  =  firebase.auth().currentUser
-        db.collection("users").doc(user.uid).set({
-            Email:email,
-            Username:username,
-            userType: type
-
-        })
-            
-            .catch(function (error) {
-                console.error("Error adding document: ", error);
-            });
+      this.state({error:'', loading:false});
     })
-
-    .catch(function (error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(error)
-            alert(errorCode)
-            // ...
-        })
-
-}
-
-handleChange = ( e)=>{
-
-    let key = e.target.name;
-
-    this.setState({
-        [key]:e.target.value
+    .catch(() =>{
+      this.setState({error:'Authtaction faild', loading:false});
     })
+    firebase.auth().signInWithEmailAndPassword(
+      this.state.email,
+      this.state.password,
+      ).then((res)=>{
+          console.log(res.user.uid);
+          
+          const db= firebase.firestore();
+          db.collection("users").where("Email", "==",this.state.email)
+          .get()
+          .then((querySnapshot)=>{
+              querySnapshot.forEach((doc)=> {
+                  console.log(doc.id, " => ", doc.data());
+                  console.log(doc.data().userType);
+                  this.setState({loggedType:doc.data().userType});
+          });
+  
+          })
+          .catch(function(error) {
+              console.log("Error getting documents: ", error);
+          })})
+  }
+  renderButtonOrLoading(){
+    if(this.state.loading){
+      return<Text> Loading </Text>
+    }
+    return <View>
+      
+      <TouchableOpacity
+      style={styles.yellowButton}
+      onPress={this.onLoginPress.bind(this)}
+      title='SignUp'><Text>Log in </Text></TouchableOpacity>  
+    </View>
 }
-
-
   render(){
-
+    
     return(
+      
       <ImageBackground
       style={{
         flex: 1,
     }}
     source={{uri:"https://images.pexels.com/photos/207253/pexels-photo-207253.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}}
     >
-      
+        <View style={{alignItems:"center"}}>
         <View style={styles.container}>
-        <Text style={styles.header}>Log in</Text>
+        <Text style={styles.header}>Sign Up</Text>
         <Text style={styles.line}>_____________________________</Text>
-        <Text style={styles.text}>Please fill this form to log in</Text>
-
+        <Text style={styles.text}>Please fill this form to create an account</Text>
+        
         <TextInput 
           style={styles.input1}
-          type="text" 
           name="email" 
           placeholder ="  E-mail"
           defaultValue={this.state.email} 
-          onChange={this.handleChange}               
+          onChangeText={email=> this.setState({email})}
+                        
         />  
-           
-         
+       
+                
         <TextInput 
           secureTextEntry
           style={styles.input3}
-          type="password" 
           name= "password" 
           placeholder ="  Password"
           defaultValue={this.state.password} 
-          onChange={this.handleChange} 
+          onChangeText={password => this.setState({password})}
+         
         />
          
-
-      
-        
-
-        <TouchableOpacity style={styles.yellowButton} onClick={this.addUser}
-        onPress={() => {
-          this.props.navigation.navigate("User");
-        }}>
-          <Text> Login</Text>
-        </TouchableOpacity>
+        {this.renderButtonOrLoading()}
+        </View>
         </View>
         </ImageBackground>
         )
@@ -107,17 +110,16 @@ handleChange = ( e)=>{
 }
   const styles=StyleSheet.create({
     container:{
-      top:170,
+      top:90,
       left:20,
       flex:1,
       maxWidth:370,
-      maxHeight:430,
+      maxHeight:575,
       alignItems: "center",
       textAlign:"center",
       position: "relative",
       backgroundColor: 'rgba(0, 0, 0, 0.7)',
       borderRadius:10,
-
     },
   
     header: {
@@ -126,21 +128,19 @@ handleChange = ( e)=>{
       right:90,
       color:'#fffde7',
       marginTop: 50,
+      left:10
     },
-
     line:{
       color:'#f9d03a',
       marginTop: -20,
       fontSize:20
     },
-
     text:{
       fontSize: 20,
       color:'#fffde7',
       marginTop: 20,
-      right:45,
+      textAlign:"center",
     },
-
     input1:{
       width:330,
       margin:10,
@@ -150,7 +150,6 @@ handleChange = ( e)=>{
       borderRadius:5,
       marginTop: 30,
     },
-
     input2:{
       width:330,
       margin:10,
@@ -167,7 +166,6 @@ handleChange = ( e)=>{
       height: 40,
       color:'black',
       borderRadius:5,
-      marginTop: 10,
     },
     yellowButton:{
       backgroundColor: '#f9d03a',
@@ -178,13 +176,16 @@ handleChange = ( e)=>{
       borderRadius:5,
       alignItems: 'center',
     },
-
     text1:{
       fontSize: 20,
-      left:'30%',
       color:'#fffde7',
-    },
-
+      marginBottom:7
+        },
+    RadioText:{
+      fontSize: 20,
+      color:'#4479EB',
+      marginBottom:17,
+      marginRight:17
+        },
   })
-
 export default Login;

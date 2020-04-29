@@ -4,90 +4,55 @@ import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
-
-
 class SignUp extends Component{
-  constructor() {
-    super();
- 
+  constructor(props) {
+    super(props);
   this.state = { 
     displayName: '',
     email: '', 
     password: '',
-    isLoading: false
-  } }
-  updateInputVal = (val, prop) => {
-    const state = this.state;
-    state[prop] = val;
-    this.setState(state);
-  }
-addUser = ()=>{
+    loading: false,
+    error:'',
+    username:"",
+  }}
+ 
+  onSignUpPress(){
     const{email, username, type, password}= this.state; 
 
-    const db = firebase.firestore();   
+    const db = firebase.firestore();
+    console.log(email,password ,"email,password")
+    this.setState({error:'', loading:true});
     if(email === '' && password === '') {
       Alert.alert('Enter details to signup!')
     } else {
       this.setState({
-        isLoading: true,
+        loading: true,
       })
-      fireba
-     
-    firebase
-    .auth()
-    .createUserWithEmailAndPassword(email,password)
-    .then((res)=>{
-      res.user.updateProfile({
-        displayName: this.state.displayName
-      })
-      console.log('User registered successfully!')
-      this.setState({
-        isLoading: false,
-        displayName: '',
-        email: '', 
-        password: ''
-      })
-        db.collection("users").doc(user.uid).set({
-            Email:email,
-            Username:username,
-            userType: type
-
-        }).then( (docRef) =>{
-          if(type =='Cheif'){
-            this.props.navigation.navigate("CheifHome");
-
-          }else{
-            this.props.navigation.navigate("ReaderHome");
-          }
-      })
-    })
-
-    .catch(error => this.setState({ errorMessage: error.message })) 
-
-
-}}
-
-handleChange = ( e)=>{
-
-    let key = e.target.name;
-
-    this.setState({
-        [key]:e.target.value
-       
-    });
+  }
+  firebase.auth().createUserWithEmailAndPassword(email,password)
+        .then(()=>{
+            let user  =  firebase.auth().currentUser
+            db.collection("users").doc(user.uid).set({
+                Email:email,
+                Username:username,
+    
+    
+            })})
+ }
+  renderButtonOrLoading(){
+    if(this.state.loading){
+      return<Text> Loading </Text>
+    }
+    return <View>
+      
+      <TouchableOpacity
+      style={styles.yellowButton}
+      onPress={this.onSignUpPress.bind(this)}
+      title='SignUp'><Text>Sign Up</Text></TouchableOpacity>  
+    </View>
 }
-
-
   render(){
-    if(this.state.isLoading){
-      return(
-        <View style={styles.preloader}>
-          <ActivityIndicator size="large" color="#9E9E9E"/>
-        </View>
-      )
-    }  
-
-
+    
     return(
       
       <ImageBackground
@@ -96,54 +61,43 @@ handleChange = ( e)=>{
     }}
     source={{uri:"https://images.pexels.com/photos/207253/pexels-photo-207253.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}}
     >
-      
+        <View style={{alignItems:"center"}}>
         <View style={styles.container}>
         <Text style={styles.header}>Sign Up</Text>
         <Text style={styles.line}>_____________________________</Text>
         <Text style={styles.text}>Please fill this form to create an account</Text>
-
+        
         <TextInput 
           style={styles.input1}
-          type="text" 
           name="email" 
           placeholder ="  E-mail"
           defaultValue={this.state.email} 
-          value={this.state.email}
-          onChangeText={(val) => this.updateInputVal(val, 'email')}
+          onChangeText={email=> this.setState({email})}
                         
         />  
-           
         <TextInput 
-          style={styles.input2}
-          type="text" 
-          name= "username" 
-          placeholder ="  Username"
+          style={styles.input3}
+          name= "userName" 
+          placeholder ="  userName"
           defaultValue={this.state.username} 
-          value={this.state.displayName}
-          onChangeText={(val) => this.updateInputVal(val, 'displayName')}
-        />
 
+          onChangeText={username => this.setState({username})}
+         
+        />
                 
         <TextInput 
           secureTextEntry
           style={styles.input3}
-          type="password" 
           name= "password" 
           placeholder ="  Password"
           defaultValue={this.state.password} 
-          value={this.state.password}
-          onChangeText={(val) => this.updateInputVal(val, 'password')}
-          maxLength={15}
-          secureTextEntry={true}
+
+          onChangeText={password => this.setState({password})}
+         
         />
          
-
-        
-
-        <TouchableOpacity style={styles.yellowButton} 
-        onPress={()=>this.addUser}>
-          <Text> Sign up</Text>
-        </TouchableOpacity>
+        {this.renderButtonOrLoading()}
+        </View>
         </View>
         </ImageBackground>
         )
@@ -161,7 +115,6 @@ handleChange = ( e)=>{
       position: "relative",
       backgroundColor: 'rgba(0, 0, 0, 0.7)',
       borderRadius:10,
-
     },
   
     header: {
@@ -172,21 +125,17 @@ handleChange = ( e)=>{
       marginTop: 50,
       left:10
     },
-
     line:{
       color:'#f9d03a',
       marginTop: -20,
       fontSize:20
     },
-
     text:{
       fontSize: 20,
       color:'#fffde7',
       marginTop: 20,
       textAlign:"center",
-
     },
-
     input1:{
       width:330,
       margin:10,
@@ -196,7 +145,6 @@ handleChange = ( e)=>{
       borderRadius:5,
       marginTop: 30,
     },
-
     input2:{
       width:330,
       margin:10,
@@ -223,20 +171,16 @@ handleChange = ( e)=>{
       borderRadius:5,
       alignItems: 'center',
     },
-
     text1:{
       fontSize: 20,
       color:'#fffde7',
       marginBottom:7
         },
-
     RadioText:{
       fontSize: 20,
       color:'#4479EB',
       marginBottom:17,
       marginRight:17
         },
-
   })
-
 export default SignUp;

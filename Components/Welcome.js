@@ -1,10 +1,28 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, ImageBackground,Image, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, ImageBackground,Image, TouchableOpacity, StatusBar} from 'react-native';
 import 'react-native-gesture-handler';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
 
 
 
 export default class Welcome extends Component {
+  //it sees if the current user in looged in or not, when he's logged in it pushs him to 'meals
+  // when he's not it pushes him to 'login  
+  // componentDidMount(){
+  //   this.checkIfUserLogedIn();
+  // }
+  // checkIfUserLogedIn = ()=>{
+  //   firebase.auth().onAuthStateChanged(function(user){
+  //     if(user){
+  //       this.props.navigation.navigate('meals')
+  //     }
+  //     else{
+  //       this.props.navigation.navigate('Login')
+  //     }
+  //   }.bind(this))
+  // }
   onPress = () => {
 		this.props.navigation.navigate("SginUp");
   };
@@ -21,7 +39,9 @@ export default class Welcome extends Component {
           flex: 1
         }}
         source={{uri:"https://images.pexels.com/photos/207253/pexels-photo-207253.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}}      >
-    
+          <StatusBar
+            backgroundColor='#232a4f'
+            barStyle='light-content'/>
       <Image 
         style={{
           width:300,
