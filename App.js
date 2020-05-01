@@ -10,6 +10,7 @@ import Add from './Components/addMeal'
 import myMeals from './Components/myMeals'
 import firebase from 'firebase';
 import { firebaseConfig } from './Components/config';
+import add from './Components/add'
 firebase.initializeApp(firebaseConfig)
 
 
@@ -40,7 +41,10 @@ AddMeal:{
 },
 myMeals:{
   screen:myMeals
-}
+},
+// add:{
+//   screen:add
+// }
 
 
 

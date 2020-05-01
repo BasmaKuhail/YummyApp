@@ -51,7 +51,11 @@ class Login extends Component{
           })
           .catch(function(error) {
               console.log("Error getting documents: ", error);
+          })
+          .then( (docRef) =>{
+            this.props.navigation.navigate('meals')
           })})
+          
   }
   renderButtonOrLoading(){
     if(this.state.loading){

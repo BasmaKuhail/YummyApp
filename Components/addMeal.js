@@ -41,13 +41,16 @@ class Add extends Component{
     
         console.log(this.state)
         db.collection("meals").add({
-            name: name,
-            contents: contents,
+            mealName: name,
+            mealContents: contents,
             recipe: recipe,
-            time: time,
+            timeNeed: time,
             type: type,
             image: image,           
-        })
+        }).then( (docRef) =>{
+            this.props.navigation.navigate('myMeals')
+  
+          })
         
 
 
@@ -78,7 +81,7 @@ render(){
             >
                 <View style={styles.container}>
             <Text style={styles.title}>Add Meal</Text>
-            <Text  style={styles.text}>Hi Cheif, it's nice to see you again!</Text>
+            <Text  style={styles.text}>Hi Chef, it's nice to see you again!</Text>
             <TextInput 
                         style={styles.input}  
                         name="name" 
@@ -119,6 +122,13 @@ render(){
                         onChangeText={image=> this.setState({image})}
 
                     />
+                    {/* <TouchableOpacity           
+                        style={styles.yellowButton}
+                        onPress={() => {
+						this.props.navigation.navigate("Add");
+					}}>
+                        <Text>Add Image</Text>
+                    </TouchableOpacity> */}
                       {this.renderButtonAdd()}
 
                 </View>

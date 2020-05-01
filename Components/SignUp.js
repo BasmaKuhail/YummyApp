@@ -37,7 +37,11 @@ class SignUp extends Component{
                 Username:username,
     
     
-            })})
+            }).then( (docRef) =>{
+              this.props.navigation.navigate('meals')
+    
+            })
+          })
  }
   renderButtonOrLoading(){
     if(this.state.loading){
