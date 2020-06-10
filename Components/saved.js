@@ -10,12 +10,15 @@ class Saved extends Component{
         currentUserMealId:[]
     }
 
+
     componentDidMount(){
 
         const db= firebase.firestore();
         let me = this;
         const {currentUserMealId, favMeals}= this.state; 
+
         this.list(); 
+
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
               // User logged in already or has just logged in.
@@ -25,23 +28,29 @@ class Saved extends Component{
             } else {
               // User not logged in or has just logged out.
             };
+
+
+
+
         db.collection("mealUserId").where("currentUserUid", "==",this.state.uid)
         .get()
         .then((querySnapshot)=>{
             querySnapshot.forEach((doc)=> {
                 // doc.data() is never undefined for query doc snapshots
                 console.log(doc.id, " => ", doc.data());
-                me.setState({currentUserMealId:doc.data().mealId})
+                currentUserMealId.push(doc.data().mealId);
+                me.setState(currentUserMealId)
         });
         }).then(()=>{
             console.log(currentUserMealId);
             currentUserMealId.forEach((id)=>{
                 console.log(id);
-                db.collection('meals').doc(state.params.id)
+                db.collection('meals').doc(id)
             .get()
             .then((doc)=>{
                     console.log(doc.data());
-                    me.setState({favMeals:doc.data()})
+                    favMeals.push(doc.data());
+                    me.setState(favMeals)
 
                 });
             })
@@ -59,24 +68,20 @@ class Saved extends Component{
             const {currentUserMealId, favMeals}= this.state; 
 
             currentUserMealId.forEach(id => {
-                console.log(params.id);
-                db.collection('meals').doc(state.params.id)
+                console.log(id);
+                db.collection('meals').doc(id)
                 .get()
                 .then((doc)=>{
-                    console.log(doc.data());
-                    me.setState({favMeals:doc.data()})
-
+                        console.log(doc.data());
+                        favMeals.push(doc.data());
+                        me.setState(favMeals)
     
                     });
                 });
         }
-
-
-         
-       learnMore=(clickedMealId)=>{
-        console.log(clickedMealId)
-        this.props.navigation.navigate('Meal', {id: clickedMealId})
-   }
+        learnMore=(clickedMealId)=>{
+            this.props.history.push('/meal', {id: clickedMealId})
+         }
     render(){
         const {favMeals}= this.state;
         console.log(this.state.favMeals); 
@@ -92,27 +97,49 @@ class Saved extends Component{
             }}
             source={{uri:"https://images.pexels.com/photos/207253/pexels-photo-207253.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}}      >
         
+        <ScrollView> 
 
         <View style={{flex:1, alignItems:"center"}}>
             
                     {favMeals.map((meal)=>
 
                        
-                        <View style={styles.container}>
-                            <Text style={styles.header}>{meal.mealName}</Text>
-                            <Image
-                                source={{uri:meal.image}}/>
-                            <TouchableOpacity
-                                style={styles.button}
-                                onPress={()=>this.learnMore(meal.id)}>
-                                <Text  style={styles.text}>SHOW MORE</Text>
-                            </TouchableOpacity>
-                        </View>
+<View style={styles.container}>
+            
+<Text style={styles.header}>{meal.mealName}</Text>
+<Image 
+style={styles.image}
+source={{uri:meal.image}}    
+/>
+<View style={{
+flexDirection: 'row',
+justifyContent: 'space-between',
+            
+}}>
+
+<TouchableOpacity
+style={styles.button}
+onPress={()=>this.learnMore(meal.id)}>
+<Text  style={styles.text}>SHOW MORE</Text>
+</TouchableOpacity>
+
+<TouchableOpacity
+style={styles.button2}
+onPress={()=>this.getMealId(meal.id)}>
+<Image
+style={styles.fav}
+source={require('../assets/heart.png')}>
+        
+</Image>
+
+</TouchableOpacity>
+</View>
+</View>
 
                     )}
                
             </View>
-                
+        </ScrollView>        
 </ImageBackground>
         )
     }

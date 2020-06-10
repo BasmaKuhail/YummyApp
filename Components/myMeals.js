@@ -5,13 +5,14 @@ import { Text, View,  ScrollView,TouchableOpacity,StyleSheet,ImageBackground, Im
 
 class MyMeals extends Component{
 
+  
     state={
         meals:[],
         uid:"",
     }
 
-
     componentDidMount(){
+
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
               // User logged in already or has just logged in.
@@ -22,32 +23,36 @@ class MyMeals extends Component{
               // User not logged in or has just logged out.
             };
             console.log("The user id is =>" + this.state.uid)
+
         
+
+
         const db= firebase.firestore();
-        const {meals} = this.state;
         let me = this;
         console.log("The user id is =>" + this.state.uid)
 
                 db.collection("meals").where("usid", "==",this.state.uid)
                 .get()
-                .then(function(querySnapshot){
-
+                .then((querySnapshot)=>{
                     querySnapshot.forEach((doc)=> {
-                        console.log('id')
+                        // doc.data() is never undefined for query doc snapshots
+                        // console.log(doc.id, " => ", doc.data());
+                        // this.state.meals.push(doc.data());
+                        // me.setState(this.state.meals)
                         const fetchedMealData = {
                             id: doc.id,
                             ...doc.data()
                           };
                           console.log(fetchedMealData)
-                        meals.push(fetchedMealData);
-                        me.setState(meals)
+                        this.state.meals.push(fetchedMealData);
+                        me.setState(this.state.meals)
 
                 });
         
                 });
 
-            ;
-    })}
+            });
+    }
     learnMore=(clickedMealId)=>{
         console.log(clickedMealId)
       this.props.navigation.navigate('Meal', {id: clickedMealId})

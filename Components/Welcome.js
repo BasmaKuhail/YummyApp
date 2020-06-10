@@ -10,19 +10,19 @@ import 'firebase/auth';
 export default class Welcome extends Component {
   //it sees if the current user in looged in or not, when he's logged in it pushs him to 'meals
   // when he's not it pushes him to 'login  
-  // componentDidMount(){
-  //   this.checkIfUserLogedIn();
-  // }
-  // checkIfUserLogedIn = ()=>{
-  //   firebase.auth().onAuthStateChanged(function(user){
-  //     if(user){
-  //       this.props.navigation.navigate('meals')
-  //     }
-  //     else{
-  //       this.props.navigation.navigate('Login')
-  //     }
-  //   }.bind(this))
-  // }
+  componentDidMount(){
+    this.checkIfUserLogedIn();
+  }
+  checkIfUserLogedIn = ()=>{
+    firebase.auth().onAuthStateChanged(function(user){
+      if(user){
+        this.props.navigation.navigate('meals')
+      }
+      else{
+        this.props.navigation.navigate('Login')
+      }
+    }.bind(this))
+  }
   onPress = () => {
 		this.props.navigation.navigate("SginUp");
   };
